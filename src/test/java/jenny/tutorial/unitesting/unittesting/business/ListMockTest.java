@@ -3,6 +3,7 @@ package jenny.tutorial.unitesting.unittesting.business;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -77,5 +78,33 @@ public class ListMockTest {
         List<String> allCaptorValues = captor.getAllValues();
         assertEquals("SomeString1", allCaptorValues.get(0));
         assertEquals("SomeString2", allCaptorValues.get(1));
+    }
+
+    @Test
+    public void mocking() {
+        ArrayList arrayListMock = mock(ArrayList.class);
+        System.out.println(arrayListMock.get(0)); // returns null
+        System.out.println(arrayListMock.size()); // returns 0
+        arrayListMock.add("test");
+        arrayListMock.add("test2");
+        System.out.println(arrayListMock.size()); // still returns 0
+        when(arrayListMock.size()).thenReturn(5);
+        System.out.println(arrayListMock.size()); // returns 5
+    }
+
+    @Test
+    public void spying() {
+        ArrayList arrayListSpy = spy(ArrayList.class);
+        arrayListSpy.add("test0");
+        System.out.println(arrayListSpy.get(0)); // returns test0
+        System.out.println(arrayListSpy.size()); // returns 1
+        arrayListSpy.add("test");
+        arrayListSpy.add("test2");
+        System.out.println(arrayListSpy.size()); // still returns 3
+        when(arrayListSpy.size()).thenReturn(5);
+        System.out.println(arrayListSpy.size()); // returns 5
+        arrayListSpy.add("test4");
+        System.out.println(arrayListSpy.size()); // STILL returns 5
+        verify(arrayListSpy).add("test4");
     }
 }
